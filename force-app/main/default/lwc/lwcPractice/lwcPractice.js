@@ -11,7 +11,7 @@ export default class LwcPractice extends LightningElement {
     address={
         city: 'Melborn',
         postcode : 3000,
-        country:'indilollll'
+        country:'indilollllb'
     }
     //methods
    // getName(){
