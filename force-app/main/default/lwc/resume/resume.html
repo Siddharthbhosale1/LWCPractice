@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="Custom Account Search">
+        <lightning-layout multiple-rows="true" vertical-align="end">
+            <lightning-layout-item size="4" padding="around-small">
+                 <!--Input text to Search Account-->
+                <lightning-input type="text" label="Enter Account Name To Search"
+                    value={searchKey} 
+                    onchange={handelSearchKey}> 
+                </lightning-input>
+            </lightning-layout-item >
+
+            <lightning-layout-item size="2" padding="around-small">
+                <!--Search Button-->
+                <lightning-button label="Search" variant="brand" onclick={SearchAccountHandler}>
+
+                </lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" padding="around-small">
+                <!--List Of Account Using data Tabel-->
+                
+                 <lightning-datatable key-field="id"  data={accounts}  hide-checkbox-column=”true”
+                 columns ={cols} >                         
+                     </lightning-datatable> 
+                    
+                    
+                
+            </lightning-layout-item>
+        </lightning-layout>
+
+    </lightning-card>
+   
+       
+
+</template>
