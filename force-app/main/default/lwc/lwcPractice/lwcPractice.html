@@ -6,13 +6,28 @@
             <lightning-input type="text" label="Input" onkeyup={cangeHandler}>
 
             </lightning-input>
-            <div>{fullname} is course of {title}
+            <div>{fullname} is course of {title}</div>
             </div>
-    
-        </div>
-        
-        <!--<p class="slds-p-horizontal_small">Card Body (custom component)</p> 
+        </lightning-card>
+
+
+
+
+            <!--<p class="slds-p-horizontal_small">Card Body (custom component)</p> 
         <p slot="footer">Card Footer</p> -->
+    
+   
+    <lightning-card title="@trackproperties">
+        <div class="slds-var-m-around_medium">
+            <lightning-input type="text" label="Input" onkeyup={trackHandler}>
+
+            </lightning-input>
+            <div>{address.city} is my city</div>
+
+            </div>
+
+       
     </lightning-card>
+
 
 </template>
