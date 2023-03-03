@@ -14,6 +14,6 @@ export default class HelloConditionalRendering extends LightningElement {
         this.name = event.target.value
     }
     get helloMethod(){
-        return this.name === 'hello'
+        return this.name === 'hello!'
     }
 }
