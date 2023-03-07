@@ -3,6 +3,11 @@
         <div class="slds-var-m-around_medium">
         
         <h1>Hey I am heading</h1>
+        <template for:each={userName} for:item="notUser">
+           <div class="name" key={notUser}>{notUser}</div> 
+        </template> 
+        <div class="child" lwc:dom="manual"></div>
+        
         <button onclick={fetchDetailHandler}>fetch</button>
         </div>
     </lightning-card>
