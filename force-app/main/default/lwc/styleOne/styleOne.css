@@ -1,15 +1,4 @@
-.wrapper {
-    width:100%;
-    background-color: #ddd;
-
-}
-
-.skills {
-    text-align: right;
-    padding-top:10px;
-    padding-bottom: 10px;
-    color:white;
-}
+@import 'c/cssLibrary';
 .html{
     width: 80%;
     background-color: rgb(11, 42, 42);
