@@ -18,6 +18,12 @@ export default class P2cParentComponent extends LightningElement {
             description : "Third card description."
         }
     ]
+
+    percentage=10
+
+    changeHandler(event){
+        this.percentage= event.target.value
+    }
    
 }
 
