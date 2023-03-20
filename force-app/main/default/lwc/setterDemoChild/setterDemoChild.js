@@ -8,7 +8,8 @@ export default class SetterDemoChild extends LightningElement {
         return this.userDetail
     }
     set detail(data){
-        this.userDetail=data
+        let newAge= data.age*2
+        this.userDetail={...data, age:newAge, "location":"Melbourne"}
 
     }
 }
