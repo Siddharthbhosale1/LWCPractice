@@ -2,7 +2,16 @@
     <lightning-card title="Slot demo">
         <div class="slds-p-around_medium">
             <c-slot-child-demo>
-                <p>I am Salesforce</p>
+                <p class="slds-text-color_success" slot="First">I am Salesforce</p>
+                <p class="slds-text-color_error" slot="Second">My age is 25</p>
+                <p slot="footer">I am footer</p>
+            </c-slot-child-demo>
+        </div>
+        <div class="slds-p-around_medium">
+            <c-slot-child-demo>
+                <p class="slds-text-color_success" slot="First">I am Salesforce</p>
+                <p class="slds-text-color_error" slot="Second">My age is 25</p>
+                <!--<p slot="footer">I am footer</p>-->
             </c-slot-child-demo>
         </div>
     </lightning-card>

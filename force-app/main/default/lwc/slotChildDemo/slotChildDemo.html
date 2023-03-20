@@ -1,8 +1,12 @@
 <template>
     <lightning-card title="Slot child component">
         
-        <div>hey im child</div>
-        <div><slot></slot></div><!--Unnamed Slot-->
+        <div>What is your name</div>
+        <div><slot name="First"></slot></div><!--named Slot-->
         <div>What is your age?</div>
+        <div><slot name="Second"></slot></div>
+        <footer class="slds-card__footer slds-hide">
+            <slot name="footer" onslotchange={handleFooterChange}></slot>
+        </footer>
     </lightning-card>
 </template>
