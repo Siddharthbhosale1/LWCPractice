@@ -4,7 +4,7 @@
     <isExposed>true</isExposed>
     <description>This is a sample Lightning Message Channel.</description>
     <lightningMessageFields>
-        <fieldName>recordId</fieldName>
+        <fieldName>lmsData</fieldName>
         <description>This is the record Id that changed</description>
     </lightningMessageFields>
 </LightningMessageChannel>
