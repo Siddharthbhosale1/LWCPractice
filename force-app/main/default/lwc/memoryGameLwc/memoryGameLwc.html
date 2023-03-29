@@ -3,14 +3,22 @@
         <lightning-card title="Memory Game LWC">
             <div class="slds-var-p-around_medium">
                 <section class="score-panel">
-                    <span class="moves">1</span> move(s)
-                    <div class="timer">10 sec</div>
-                    <div class="restart">
+                    <span class="moves">{moves}</span> move(s)
+                    <div class="timer">{totalTime}</div>
+                    <div class="restart" onclick={shuffle}>
                         <i class="fa fa-repeat" aria-hidden="true"></i>
                     </div>
                 </section>
-                Game Area
-            </div>
+                <section class="Game Area">
+                    <ul class="deck card-deck grid-container">
+                        <template for:each={card} for:item="card">
+                            <li class={card.listClass} type={card.type} key={card.id} onclick={displayCard}>
+                                <i class={card.icon}></i>
+                            </li>
+                        </template>
+                    </ul>
+                </section>
+              </div>
         </lightning-card>
     </div>
 </template>

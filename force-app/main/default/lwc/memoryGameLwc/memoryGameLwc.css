@@ -17,3 +17,136 @@
     cursor: pointer;
     margin: 0px 8px;
 }
+.grid-container{
+    display: grid;
+    grid-template-columns: repeat(4 , 1fr);
+    grid-template-rows: repeat(4 , 1fr);
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+    background: #1c3260;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 5px 10px 8px #888888;
+}
+.grid-container .card{
+    height: 3.7rem;
+    width: 3.7rem;
+    margin: 0.2rem;
+    background-color: #f03df5;
+    font-size: 0px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+.grid-container .card.open{
+    transform: rotateY(0);
+    background: #02b3e4;
+    cursor: default;
+    animation-name: flipInY;
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    animation-duration: .75s;
+}
+
+.grid-container .card.show{
+   font-size: 33px;
+   visibility: visible !important; 
+   opacity: 100 !important;
+}
+
+.grid-container .card.disabled{
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.grid-container .card.match{
+   cursor:default;
+   background: yellowgreen;
+   font-size: 33px;
+   animation-name: rubberBand;
+   -webkit-backface-visibility: visible !important;
+   animation-duration: .75s;
+
+}
+
+.grid-container .card.unmatched{
+    cursor:default;
+    background: rgb(227, 39, 39);
+    
+    animation-name: pulse;
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    animation-duration: .75s;
+ 
+ }
+
+/*animation*/
+@keyframes flipInY{
+    from{
+        transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+        animation-timing-function: ease-in;
+        opacity: 0;
+   }
+
+   40% {
+    transform: perspective(400px) rotate3d(0, 1, 1, -20deg);
+    animation-timing-function: ease-in;
+   }
+
+   60% {
+    transform: perspective(400px) rotate3d(0, 1, 1, 10deg);
+    opacity: 1;
+   }
+
+   80% {
+    transform: perspective(400px) rotate3d(0, 1, 1, -5deg);
+   }
+
+   to{
+    transform: perspective(400px);
+   }
+}
+@keyframes rubberBand{
+    from{
+        transform:scale3d(1,1,1);
+    }
+
+    30% {
+        transform: scale3d(1.25, 0.75, 1);
+    }
+
+    40% {
+        transform: scale3d(0.75, 1.25, 1);
+    }
+
+    50% {
+        transform: scale3d(1.15, 0.85, 1);
+    }
+    65% {
+        transform: scale3d(0.95, 1.05, 1);
+    }
+    75% {
+        transform: scale3d(1.05, .95, 1);
+    }
+    to {
+        transform: scale3d(1, 1, 1);
+    }
+
+}
+@keyframes pulse {
+   
+        from {
+            transform: scale3d(1,1,1);
+        }
+        50%{
+            transform: scale3d(1,2,1.2,1.2);
+        }
+        to {
+            transform: scale3d(1,1,1);
+        }
+    
+}
