@@ -18,4 +18,6 @@ userDetailHandler({data,error}){
     }
   }
 
+  @wire(getRecord, {recordId:'0055j0000051nhlAAA',fields:['User.Name', 'User.Email']})
+  userDetailProperty
 }
