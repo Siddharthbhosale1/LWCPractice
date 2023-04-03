@@ -10,9 +10,9 @@
 
     <lightning-card title="User detail as a property">
         <div class="slds-var-p-around_medium">
-            <template if:true={userDetails}>
-               <div>Email -- {userDetails.Email.value}</div> 
-               <div>Name -- {userDetails.Name.value}</div> 
+            <template if:true={userDetailProperty.data}>
+               <div>Email -- {userDetailProperty.data.fields.Email.value}</div> 
+               <div>Name -- {userDetailProperty.data.fields.Name.value}</div> 
             </template>
         </div>
     </lightning-card>
