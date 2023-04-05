@@ -1,0 +1,12 @@
+<aura:component
+ implements="lightning:appHomeTemplate"
+ description="Three Column layout"
+ access="global"
+>
+<div aura:id="container">
+   <lightning:layout>
+    <lightning:layoutItem ></lightning:layoutItem>
+   </lightning:layout>
+
+</div>
+</aura:component>	
