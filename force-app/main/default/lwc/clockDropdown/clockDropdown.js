@@ -8,14 +8,14 @@ export default class ClockDropdown extends LightningElement {
     changeHandler(event){
         console.log(this.label)
         console.log(event.target.value)
-        this.callParent(event.target.value)
+        this.callParent(event.target.value) // passing event.target.value to callParent
     }
 
-    callParent(){
+    callParent(value){ // value is now a parameter
         this.dispatchEvent(new CustomEvent('optionHandler' ,{ 
         detail: {
             label:this.label,
-            value:value
+            value:value // using the passed value
         }
         }))
     }
