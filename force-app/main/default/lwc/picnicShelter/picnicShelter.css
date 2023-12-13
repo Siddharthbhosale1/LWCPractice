@@ -1,0 +1,93 @@
+.fullcalendarjs {
+    max-width: 1000px;
+    margin: 40px auto;
+  }
+  
+  .modal__container__two{
+    max-width: 70rem !important;
+    width:70% !important;
+  }
+  
+  .modalclass__two{
+  overflow: initial;
+  }
+  
+  .scrollableclass{
+  max-height: 500px;
+  }
+  
+  .hideemail{
+  display: none;
+  }
+  
+  .showemail{
+  display: inline;
+  }
+  
+  .radiosize{
+  border: 0px;
+  width: 100%;
+  height: 2em; 
+  }
+  
+  .radioLabel{
+  font-size: 9pt;
+  font-weight: bold;
+  text-align: left;
+  }
+  
+  .eventCost{
+  font-size: 10pt;
+  font-weight: bold;
+  text-align: left;
+  }
+  
+  .fontControl{
+  font-weight: bold;
+  }
+  
+  .my-icon {
+  --sds-c-icon-color-foreground-default: orangered;
+  top: 50px;
+  }
+  
+  .my-icon-two{
+  --sds-c-icon-color-foreground-default: dodgerblue;
+  top: 50px;
+  }
+  
+  .color{
+  color: red;
+  }
+  
+  .color:hover{
+  background-color: lightgreen;
+  }
+  
+  .displaymodal{
+  display: inline;
+  }
+  
+  .slds-path__title.one{
+  color: white;
+  }
+  .contentheight{
+    height: 400px;
+  }
+  .costFont{
+    font-size: 30px;
+  }
+  
+  .centeralign {
+    text-align: center;
+  }
+  .paymentMode {
+    text-align: center;
+  
+    font-size: 30px;
+    margin-top: 10px;
+  }
+  .modalwidth {
+    width: 70% !important;
+    max-width: 70% !important;
+  }

@@ -1,0 +1,31 @@
+<template>
+    <div class="buttonAndBox">
+       <div class="inputBox" style=" width:517px;margin-left: 367px;">
+           <p style="font-size:medium;margin-bottom: -19px;">Search by facilities and locations</p>
+           <lightning-input type = "text" value={searchText} onchange={handleSearchChange}></lightning-input>
+       </div>
+       <div class="inputButton" style="margin-left: 891px;margin-top: -32px;margin-right: 525px;">
+           <lightning-button variant="brand" label="Search" onclick={handleSearchClick}></lightning-button>
+       </div>
+      
+   </div>
+   <div class = "ListIteration" style="margin-top: 61px;margin-left: 367px;">
+   <ul>
+       <template for:each={recordsWithUrls} for:item="item">
+           <div class="slds-box" key={item.Id} style="margin-right: 451px; margin-bottom: 10px;">
+               <span class="siteURL" style="color: #0070d9; font-size: 18px; font-weight: 600; text-align: left;">
+                   <p><b><a style="color: blue;" href={item.url}>Service Facility : {item.Name}</a></b></p>
+               </span>
+               <div class="otherDetails">
+                   <p style="font-size: 14px;"><b>Location:</b> {item.Facility_Location__c}</p>
+                   <p style="font-size: 14px;"><b>Maximum Capacity:</b> {item.Maximum_Capacity__c}</p>
+      
+                   <p style="font-size: 14px;"><b>Status:</b> {item.Status__c}</p>
+                   <p style="font-size: 14px;"><b>Cost:</b> {item.Cost__c}$</p>
+                
+               </div>
+           </div> 
+       </template>
+   </ul>
+   </div>
+</template>

@@ -1,0 +1,29 @@
+<template>
+    <lightning-card title="Select Case Managers">
+        <div class="slds-p-around_small">
+
+            <lightning-dual-listbox name="Case Managers"
+                                    label="Select Case Manager"
+                                    source-label="Available"
+                                    selected-label="Selected"
+                                    field-level-help="Select Case Manager"
+                                    options={options}
+                                    value={selectedUsers}
+                                    onchange={handleChange}></lightning-dual-listbox>
+                                    <br>
+                                    
+                                    <lightning-button variant="brand" 
+                                            label="Save" 
+                                            onclick={saveChanges}
+                                            slot="footer"
+                                            class="slds-float_right"
+                                        > <!-- use onclick attribute -->
+                                    </lightning-button>
+                                    <br>
+                                                        
+                    
+            
+        </div>
+    </lightning-card>
+    
+</template>

@@ -1,0 +1,10 @@
+lightning-button.button1 {
+    background: #69A64E;
+}
+.slds-button.slds-button_neutral{
+color: white;
+}
+.break-location-text {
+    font-size: 14px;
+    white-space: pre-line; /* Allows line breaks to be preserved */
+}

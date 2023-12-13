@@ -1,0 +1,42 @@
+.alarm-card{
+    max-width: 440px;
+    width: 100%;
+    padding: 30px;
+    background: #243356;
+    color: #fff;
+    border-radius:16px;
+    margin: 24px auto;
+}
+h1{
+    color: #ffcd0a;
+    font-size: 36px;
+    text-align: center;
+    font-weight: 500;
+
+}
+h2{
+    font-size: 48px;
+    text-align: center;
+    font-weight: 500;
+    color: #00d9fe;
+    margin: 30px auto;
+}
+button{
+    background: #ffcd0a;
+    font-size: 20px;
+    padding: 14px;
+    border-color: #ffcd0a;
+    color: #243356;
+    margin-top: 12px;
+
+}
+img{
+    margin: 20px auto;
+    display: block;
+}
+.custom_label{
+    color:#00d9fe;
+}
+.custom_select{
+    color:#243356;
+}

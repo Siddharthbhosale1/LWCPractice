@@ -1,0 +1,476 @@
+<!-- 
+@description: Lightning web component using Fullcalendar.io js library to display most recent events
+@author: Brahmaji tammana from www.auraenabled.com 
+@jslibrary: https://fullcalendar.io/ -->
+<template>
+    <template if:true={openSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+   <p style="font-size:30px;text-align: center;"><b >Campsite</b></p>
+    <div class="slds-grid slds-wrap slds-theme_default">
+        <div class="slds-col slds-size_12-of-12">
+            <div id="calendar" class="fullcalendarjs"></div>
+        </div>
+    </div>
+
+    <template if:true={newVar}>
+        <div data-modal="custommodal" class="modalclass">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class={modalClasses}>
+                    <div style="width: 900px; margin-left: -103px;">
+
+                        <header class="slds-modal__header">
+                            <lightning-button-icon icon-name="utility:close" class="slds-modal__close " alternative-text="Close" title="Close" size="large" variant="bare-inverse" onclick={handleCancel} ></lightning-button-icon>
+                            <template if:true={openModal}>
+                                <div class="slds-grid slds-wrap slds-theme_default">
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="action:new_event" size="small" title="New Event" class="slds-float_left"></lightning-icon></div>
+                                    <div class="slds-col slds-size_4-of-12"><h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">New Booking</h2></div>
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="action:log_event" size="small" title="New Booking" class="slds-float_right"></lightning-icon></div>
+                                </div>
+                            </template>
+                            <template if:true={openAttendeesModal}>
+                                <div class="slds-grid slds-wrap slds-theme_default">
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="action:new_event" size="small" title="New Booking" class="slds-float_left"></lightning-icon></div>
+                                    <div class="slds-col slds-size_4-of-12"><h2 class="slds-modal__title slds-hyphenate">Participants</h2></div>
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="action:user" size="small" title="New Event" class="slds-float_right"></lightning-icon></div>
+                                </div>
+                            </template>
+                            <template if:true={openDisclaimer}>
+                                <div class="slds-grid slds-wrap slds-theme_default">
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="action:new_event" size="small" title="Disclaimar" class="slds-float_left"></lightning-icon></div>
+                                    <div class="slds-col slds-size_4-of-12"><h2 class="slds-modal__title slds-hyphenate">Disclaimer</h2></div>
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="action:user" size="small" title="New Event" class="slds-float_right"></lightning-icon></div>
+                                </div>
+                            </template>
+                            <template if:true={summaryModal}>
+                                <div class="slds-grid slds-wrap slds-theme_default">
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="action:new_event" size="medium" title="New Booking" class="slds-float_left"></lightning-icon></div>
+                                    <div class="slds-col slds-size_4-of-12"><h2 class="slds-modal__title slds-hyphenate">Summary</h2></div>
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="standard:document_reference" size="large" title="New Booking" class="slds-float_right"></lightning-icon></div>
+                                </div>
+                            </template>
+                            <template if:true={paymentModal}>
+                                <div class="slds-grid slds-wrap slds-theme_default">
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="action:new_event" size="medium" title="New Booking" class="slds-float_left"></lightning-icon></div>
+                                    <div class="slds-col slds-size_4-of-12"><h2 class="slds-modal__title slds-hyphenate">Payment</h2></div>
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="standard:payment_gateway" size="large" title="Pay Summary" class="slds-float_right"></lightning-icon></div>
+                                </div>
+                            </template>
+                            <template if:true={receiptModal}>
+                                <div class="slds-grid slds-wrap slds-theme_default">
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="action:new_event" size="medium" title="New Booking" class="slds-float_left"></lightning-icon></div>
+                                    <div class="slds-col slds-size_4-of-12"><h2 class="slds-modal__title slds-hyphenate">Receipt</h2></div>
+                                    <div class="slds-col slds-size_4-of-12"><lightning-icon icon-name="standard:payment_gateway" size="large" title="Receipt" class="slds-float_right"></lightning-icon></div>
+                                </div>
+                            </template>
+                        </header>
+                        <div class="slds-theme_default slds-path slds-path_has-coaching slds-p-horizontal_small slds-p-vertical_small">
+                            <ul class="slds-path__nav">
+                                <li class="slds-path__item slds-is-active slds-is-current">
+                                    <a class="slds-path__link newEvent" href="#" onclick={pathClickHandler}>
+                                        <span class="slds-path__title one">New Booking</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete">
+                                    <a class="slds-path__link attendees" href="#" onclick={pathClickHandler}>
+                                        <span class="slds-path__title">Participants</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete">
+                                    <a class="slds-path__link disclaimer" href="#" onclick={pathClickHandler}>
+                                        <span class="slds-path__title">Disclaimer</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete">
+                                    <a class="slds-path__link summary" href="#" onclick={pathClickHandler}>
+                                        <span class="slds-path__title">Summary</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete">
+                                    <a class="slds-path__link payment" href="#" onclick={pathClickHandler}>
+                                        <span class="slds-path__title">Payment</span>
+                                    </a>
+                                </li>
+                                <li class="slds-path__item slds-is-incomplete">
+                                    <a class="slds-path__link receipt" href="#" onclick={pathClickHandler}>
+                                        <span class="slds-path__title">Receipt</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="contentheight slds-modal__content">
+                        <template if:true={openModal}>
+                            <!--<div class="slds-modal__content slds-p-around_medium modalclass__two" id="modal-content-id-1">
+                                <lightning-input label="Start Date" name="start" type="datetime" required value={startDate} class="validate" timezone="America/New_York" onchange={dateChange}></lightning-input>
+                                <lightning-input label="End Date" name="end" type="datetime" required value={endDate} class="validate" timezone="America/New_York"  onchange={dateChange}></lightning-input>
+                               
+                         
+                            </div>-->
+                            <div class="slds-modal__content slds-p-around_medium modalclass__two" id="modal-content-id-1">
+                               
+                                <div class="slds-grid slds-wrap">
+            
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class="slds-modal__content slds-p-around_medium modalclass__two" id="modal-content-id-10">
+                                        <lightning-input type="date" label="Start Date" name="start" required value={startDate} onchange={dateChange}></lightning-input>
+                        
+                        
+                                        </div>
+                                    </div>
+                        
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class="slds-modal__content slds-p-around_medium modalclass__two" id="modal-content-id-11">
+                                        <lightning-combobox label="Start Time" name="starttime" required  value={startTime} options={startOptions} onchange={dateChange}></lightning-combobox>
+                                    </div>
+                                    </div>
+                        
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class="slds-modal__content slds-p-around_medium modalclass__two" id="modal-content-id-12">
+                                        <lightning-input type="date" label="End Date" name="end" required value={endDate} onchange={dateChange}></lightning-input>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class="slds-modal__content slds-p-around_medium modalclass__two" id="modal-content-id-13">
+                                        <lightning-combobox label="End Time" name="endtime" required value={endTime} options={endOptions} onchange={dateChange}></lightning-combobox>
+                                        </div>
+                                    </div>
+                                </div>  <br><br>
+                                    <!-- &nbsp; this is for adding space to look n feel in LWC Component-->
+                                    <template if:true={showtext}>
+                                   <div style="font-size: 18px; color:red; margin-left:25px;"> Available capacity for selected slot is {noofslots1}.<br> A maximum of {noofslots1} attendees can be added with this booking.</div>
+                                </template>
+                                
+                            </div>
+                        </template>
+                        <template if:true={openAttendeesModal}>
+                            <div class={classes}>
+                                <div class="slds-modal__content slds-p-around_medium modalclass__two ">
+                                    <template for:each={attendeeList} for:item="item" for:index="index">
+                                        <lightning-card key={item.id}>
+                                            <lightning-messages></lightning-messages>
+                                            <lightning-layout multiple-rows>
+                                                <lightning-layout-item size="12" small-device-size="4" medium-device-size="2" large-device-size="1" class="slds-p-top_small slds-p-left_small">
+                                                    <lightning-icon icon-name="utility:add" size="small" access-key={item.id} id={index} alternative-text="Add Row" title="Add Row" onclick={addRow} class="my-icon-two slds-p-top_x-large"></lightning-icon>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" small-device-size="4" medium-device-size="2" large-device-size="1" class="slds-p-top_small slds-p-left_small">
+                                                    <lightning-icon icon-name="utility:delete" size="small" access-key={item.id} id={index} alternative-text="Delete Row" title="Delete Row" onclick={removeRow} class="my-icon slds-p-top_x-large"></lightning-icon>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" small-device-size="2" medium-device-size="2" large-device-size="1" class="slds-p-top_medium slds-p-right_x-large">
+                                                    <p class="radioLabel">Primary?</p><lightning-input id={item.id} label="" name="radio" type="radio" value={item.id} checked={item.isRadioChecked} onchange={handleRadio} class="radio slds-p-left_medium slds-p-top_small" required></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
+                                                    <lightning-input id={item.id} label="First Name" name="FirstName" type="text" required value={item.attendeefirstname} class="validateTwo fontControl"></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
+                                                    <lightning-input id={item.id} label="Last Name" name="LastName" type="text" required value={item.attendeelastname} class="validateTwo fontControl"></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
+                                                    <lightning-combobox id={item.id} label="Gender" name="vlocity_ins__Gender__c" value={item.attendeegender} class="validateTwo fontControl" placeholder="Select Gender" options={options} required></lightning-combobox>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="1" padding="around-small">
+                                                    <lightning-input id={item.id} label="Age" name="vlocity_ins__Age__c" type="number" required value={item.attendeeage} class="validateTwo fontControl" min-length=1 max-length=3></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" large-device-size="3" padding="around-small"></lightning-layout-item>
+                                                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
+                                                    <lightning-input id={item.id} label="Email" name="Email" type="email" required value={item.attendeeemail} class={item.emailclass}></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small">
+                                                    <lightning-input id={item.id} label="Phone" name="Phone" type="Phone" required value={item.attendeephone} class={item.emailclass} min-length=5 max-length=10></lightning-input>
+                                                </lightning-layout-item>
+                                                
+                                                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2" padding="around-small" style="width:220px !important;">
+                                                    <lightning-input id={item.id} label="License Plate Number" name="License_Plate_Number"  type="text" pattern="[A-Z0-9]+" message-when-pattern-mismatch="Special Characters and Lower Case letters not allowed" required value={item.license} class={item.emailclass} min-length=5 max-length=10></lightning-input>
+                                                </lightning-layout-item>
+                                                
+                                                <div class="slds-m-around_medium slds-align_absolute-center " >
+                                                    <lightning-card title="Document Upload " icon-name="custom:custom14" >
+                                                        <lightning-file-upload
+                                                            label="Upload Files"
+                                                            accept={acceptedFormats}
+                                                            name = {index}
+                                                            onuploadfinished={handleUploadFinished}
+                                                            multiple
+                                                        ></lightning-file-upload>
+                                                        <template if:true={item.fileArray}>
+                                                            <!-- Check if fileArray is not empty -->
+                                                            <template if:true={item.fileArray.length}>
+                                                                <lightning-card title="Uploaded Files">
+                                                                    <lightning-datatable
+                                                                        data={item.fileArray}
+                                                                        columns={columns}
+                                                                        key-field="id"
+                                                                        onrowaction={handleRowAction}
+                                                                        hide-checkbox-column
+                                                                    ></lightning-datatable>
+                                                                </lightning-card>
+                                                            </template>
+                                                        </template>
+                                                    </lightning-card>
+                                                </div> 
+                                            </lightning-layout> 
+                                        </lightning-card> 
+                                    </template>  
+                                </div>
+                            </div> 
+                        </template>
+                        <template if:true={openDisclaimer}>
+                            <div class="slds-modal__content slds-p-around_medium modalclass__two" id="modal-content-id-2">
+                                <div >
+                                    <span style="font-weight: bold; font-size: medium;">Please read the message carefully before consenting.</span>
+                                    </br><br/>
+                                    {disclaimer}
+                                    
+                                    <br/><br/>
+                                    <lightning-input  type="checkbox" data-id="checkbox" label="All Reservation details are correct" name="disclaimer-reservation"  onchange={dateChange} checked={disclaimerReservation}></lightning-input>
+                                    
+                                    <lightning-input  type="checkbox" data-id="checkbox" label="I have read and acknowledge all of the above" name="disclaimer-element"  onchange={dateChange} checked={disclaimerChecked}></lightning-input>
+                                </div> <br>
+                                <!--Sign Added here -->
+                                <c-signature-canvas onsignaturesubmit = {handlesignaturesubmit} onsigndata={updateSignatureData}> </c-signature-canvas>
+                            </div>
+                        </template>
+                        <template if:true={summaryModal}>
+                            <div class={classes}>
+                                <div class="slds-modal__content slds-p-around_medium modalclass__two">
+                                    <lightning-datatable key-field="id" data={summaryTableData} columns={summaryTableColumns} hide-checkbox-column="true" show-row-number-column></lightning-datatable>
+                                    <br/>
+                                    
+                                </div>
+                            </div>
+                        </template>
+                        <template if:true={paymentModal}>
+                            <div class="summ">
+                                <div class="summarry">
+                                    
+                                    <div class="slds-text-heading_large" style="margin-top: 1%; margin-left: 2%; font-weight: bold;">Fee Breakup</div>
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped" style="width: 50%; margin-top: 3%; margin-bottom: 4%; margin-left: 2%;">
+                                        <tr class="slds-hint-parent">
+                                            <td data-label="Spec File">
+                                                <div class="slds-cell-wrap" style="font-weight:bold">Amount</div>
+                                            </td>
+                                               
+                                            <td data-label="Spec File" style="text-align:right;">
+                                                <div class="slds-cell-wrap" style="font-weight:bold;">${eventCostFixed}</div>
+                                            </td>
+                                         </tr>   
+                                         <tr class="slds-hint-parent">
+                                            <td data-label="Spec File">
+                                                <div class="slds-cell-wrap" style="font-weight:bold">Membership Discount</div>
+                                            </td>
+                                               
+                                            <td data-label="Spec File" style="text-align:right;">
+                                                <div class="slds-cell-wrap" style="font-weight:bold;">${discountamountFixed}</div>
+                                            </td>
+                                         </tr>   
+                                         <tr class="slds-hint-parent">
+                                            <td data-label="Spec File" style="background-color:inherit;">
+                                                <div class="slds-cell-wrap" style="font-weight:bold">Service Fee 15%</div>
+                                            </td>
+                                            <td data-label="Spec File" style="background-color:inherit;text-align:right;">
+                                                <div class="slds-cell-wrap" style="font-weight:bold;">${taxesFixed}</div>
+                                            </td>
+                                         </tr>   
+                                         <tr class="slds-hint-parent" style= "background-color:aliceblue;">
+                                            <td data-label="Spec File" style="border: 1px solid black;">
+                                                <div class="slds-cell-wrap" style="font-weight:bold">Total</div>
+                                            </td>
+                                            <td data-label="Spec File" style="border: 1px solid black;text-align:right;">
+                                                <div class="slds-cell-wrap" style="font-weight:bold">${eventAndTaxesCostFixed}</div>
+                                            </td>
+                                         </tr>   
+                                    </table>
+                                </div>
+                                <template if:true={paymentOptionVisibility}>
+                                    <lightning-radio-group name="Select Payment Type" style="margin-left: 25px;"
+                                        label="Select Payment Type"
+                                        options={paymentOptions}
+                                        value={value}
+                                        onchange={handlePaymentSelection}
+                                        type="radio">
+                                    </lightning-radio-group>
+                                </template>
+                                <template if:false={paymentOptionVisibility}>
+                                    
+                                    <div class="paymentMode">
+                                        Payment Mode : {selectedPaymentOption}
+                                    </div>
+                                </template>
+                                <template if:true={isCardSelected}>
+                                    <lightning-layout multiple-rows>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small">
+                                            <lightning-input label="Card number" type="text" value={cardnumberoutput} max-length=20 onchange={cardnumberChanged} id="card-number-element" oncommit={cardnumberCommitted} class="cardnumber validateCardInfo" required ></lightning-input>
+                                        </lightning-layout-item>                                    
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small">
+                                            <lightning-input label="Name" type="text" value={cardname} class="cardHolderName validateCardInfo" onblur={nameBlur} required></lightning-input>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small">
+                                            <lightning-input label="Expiration" type="text" value={cardexpiration} placeholder="MM/YY" max-length="4" onchange={expirationChanged} oncommit={expirationCommitted} class="expirationnumber validateCardInfo" required id="card-expiration-element"></lightning-input>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small">
+                                            <lightning-combobox label="Country" name="country" value={country} placeholder="--None--" options={countries} onblur={countryBlur} class="country validateCardInfo" onchange={countryChange} required></lightning-combobox>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small">
+                                            <lightning-input label="CVV" type="number" value={cardcvv} class="cvv validateCardInfo" max-length="3" onchange={cvvChanged} required id="card-cvv-element"></lightning-input>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small">
+                                            <lightning-combobox label="State" value={state} placeholder="--None--" options={states} disabled={statesDisabled} onblur={statesBlur} required class="states validateCardInfo"></lightning-combobox>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small"></lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small">
+                                            <lightning-input label="Zip" type="text" value={zip} class="zip validateCardInfo" onblur={zipBlur} required></lightning-input>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small"></lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small">
+                                            <lightning-input label="City" type="text" value={city} class="cities validateCardInfo" onblur={cityBlur} required></lightning-input>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small"></lightning-layout-item>
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="6" large-device-size="6" class="slds-p-around_small">
+                                            <lightning-input label="Street" type="text" value={street} class="streets validateCardInfo" onblur={streetBlur} required></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </template>
+                            </div> 
+                        </template>
+                        <template if:true={receiptModal}>
+                          
+                                <div class="slds-modal__content slds-p-around_medium" style="font-size: 25px; text-align:center;">
+                                    <template if:false={isCampsite}>
+
+                                        <div style="font-size: 30px; color:blue"> Booking Confirmation</div><br>
+
+                                    Thank you for applying for a Daily Parks Permit with Parks and Rec, MyCity. Please find your permit document <a style="color: blue;" href={pdfUrl} target="_blank">here</a>.  
+                                Please ensure you carry this document with you while you come to the park on the day of your booking. 
+                                We look forward to your patronage.
+                                   
+                                </template>
+                             <template if:true={isCampsite}> 
+                                <br><div style="font-size: 30px; color:blue"> Booking Confirmation</div>
+                                Congratulations, your transaction completed Successfully. 🎉 <br/>
+                                Your Booking Reference Number Is {bookingReference} <br/>
+                                Please check your email for confirmation. <br/>
+                                Download receipt from <a style="color: blue;" href={pdfUrl} target="_blank">here</a>.<br>                             
+
+                                 </template>
+
+                                </div>
+                           
+                        </template>
+                    </div>
+                        <template if:true={openModal}>
+                            <footer class="slds-modal__footer">
+                                <template if:true={showCloseAndAddParticipants}>
+                                    <lightning-button-group>
+                                        <lightning-button label="Add Participants" name="Add Attendees" title="Attendees" variant="brand" icon-name="utility:adduser" onclick={handleAttendees}></lightning-button>
+                                    </lightning-button-group>
+                                </template>
+                                <template if:true={showCloseAtt}>
+                                    <lightning-button label="Close" name="Close" title="Close" icon-name="utility:close" onclick={handleCancel}></lightning-button>
+                                </template>
+                            </footer>
+                        </template>
+                        <template if:true={openAttendeesModal}>
+                            <footer class="slds-modal__footer">
+                                <lightning-button variant="brand-outline" name="Back" label="Back" onclick={handleBack} class="slds-float_left"></lightning-button>
+                                <template if:true={showCloseAndSummary}>
+                                    <lightning-button-group>
+                                        <lightning-button label="Close" title="Close" icon-name="utility:close" onclick={handleCancel}></lightning-button>
+                                        <lightning-button label="Disclaimer" name="Disclaimer" title="Close" icon-name="utility:summarydetail" variant="brand" onclick={handleDisclaimer}></lightning-button>
+                                    </lightning-button-group>
+                                </template>
+                                <template if:true={showClose}>
+                                        <lightning-button label="Close" title="Close" icon-name="utility:close" onclick={handleCancel}></lightning-button>
+                                </template>
+                            </footer>
+                        </template>
+                        <template if:true={openDisclaimer}>
+                            <footer class="slds-modal__footer">
+                                <lightning-button variant="brand-outline" name="Back" label="Back" onclick={handleDisclaimerBack} class="slds-float_left"></lightning-button>
+                                    <lightning-button-group>
+                                        <lightning-button label="Close" title="Close" icon-name="utility:close" onclick={handleCancel}></lightning-button>
+                                        <lightning-button label="Summary" name="Summary" title="Close" icon-name="utility:summarydetail" variant="brand" onclick={handleSummary}></lightning-button>
+                                    </lightning-button-group>
+                            </footer>
+                        </template>
+                        <template if:true={summaryModal}>
+                            <footer class="slds-modal__footer">
+                                <lightning-button variant="brand-outline" name="Back" label="Back" onclick={handleSummaryBack} class="slds-float_left"></lightning-button>
+                                <lightning-button-group>
+                                    <lightning-button label="Close" title="Close" icon-name="utility:close" onclick={handleCancel}></lightning-button>
+                                    <lightning-button label="Proceed Payment" name="Proceed Payment" title="pay" icon-name="utility:contract_payment" variant="brand" onclick={handlePayment}></lightning-button>
+                                </lightning-button-group>
+                            </footer>
+                        </template>
+                        <template if:true={paymentModal}>
+                            <footer class="slds-modal__footer">
+                                <lightning-button label="Back" name="Back" variant="brand-outline" onclick={handlePaymentBack} class="slds-float_left"></lightning-button>
+                                <lightning-button-group>
+                                    <lightning-button label="Close" title="Close" icon-name="utility:close" onclick={handleCancel}></lightning-button>
+                                    <lightning-button label="Pay" name="Pay" title="Pay" icon-name="utility:contract_payment" variant="brand" disabled={isNoPaymentOptionSelected} class="payButton" onclick={handleTransactionPayment}></lightning-button>
+                                </lightning-button-group>
+                            </footer>
+                        </template>
+                        <template if:true={receiptModal}>
+                            <footer class="slds-modal__footer">
+                                <lightning-button label="Close" title="Close" icon-name="utility:close" onclick={handleCancel} style="margin-right: 2%;"></lightning-button>
+                                <lightning-button label="Book Vehicle Permit" name="Book Vehicle Permit" title="Book Vehicle Permit" icon-name="standard:location_permit" variant="brand" onclick={handleChange}></lightning-button>
+                            </footer>
+                        </template>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+
+</template>
+
+
+<template if:true={showPopup}>
+<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true" aria-describedby="modal-content-id-5" class="slds-modal slds-fade-in-open">
+        
+            <div class="slds-modal__container modalwidth">
+                <!-- modal header start -->
+               
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideWaitingModalBox}>
+                        <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-6">
+                    <span style="color: red;font-size: 20px;font-weight: bold;padding-left: 40%;">Waiting list exceeded</span>
+                </div>
+            </div>
+        
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+<template if:true={Showboolean}>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true" aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
+        
+            <div class="slds-modal__container modalwidth">
+                <!-- modal header start -->
+               
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                        <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                    <lightning-flow flow-api-name='Daily_Vehicle_Permit_Flow' onstatuschange={handleFlowStatusChange}></lightning-flow>
+                </div>
+            </div>
+        
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+</template>
